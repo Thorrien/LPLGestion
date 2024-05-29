@@ -33,6 +33,10 @@ class Jeu(models.Model):
     type_jeu = models.CharField(max_length=10, choices=TYPE_JEU_CHOICES, default=EQUIPE)
     lien = models.URLField(blank=True, null=True)
 
+    def __str__(self):
+        return f'{self.nom} - {self.categorie}'
+
+
 class Tournoi(models.Model):
     class TYPE_TOURNOI(models.TextChoices):
         EN_LIGNE = 'online', 'En ligne'
@@ -46,6 +50,9 @@ class Tournoi(models.Model):
     joueurs_inscrits = models.ManyToManyField(Joueur, related_name='tournois_inscrits', blank=True, null=True)
     joueurs_selectionnes = models.ManyToManyField(Joueur, related_name='tournois_selectionnes', blank=True, null=True)
     type_tournoi = models.CharField(max_length=7, choices=TYPE_TOURNOI.choices, default=TYPE_TOURNOI.EN_LIGNE)
+
+    def __str__(self):
+        return f'{self.nom} / {self.date_debut}-{self.date_fin} / {self.type_tournoi}'
 
 
 class Equipe(models.Model):
@@ -77,7 +84,7 @@ class Partie(models.Model):
     vainqueur_joueur = models.ForeignKey(Joueur, on_delete=models.CASCADE, related_name='parties_gagnees_joueur', blank=True, null=True)
     vainqueur_equipe = models.ForeignKey(Equipe, on_delete=models.CASCADE, related_name='parties_gagnees_equipe', blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True)
-    
+
     def __str__(self):
         if self.jeu.type_jeu == Jeu.SOLO:
             return f'{self.joueur1.username} vs {self.joueur2.username} - {self.jeu.nom}'
@@ -91,3 +98,5 @@ class HautFait(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     xp = models.IntegerField()
 
+    def __str__(self):
+        return f'{self.nom} - {self.description}'
