@@ -7,6 +7,9 @@ class Joueur(AbstractUser):
     level = models.IntegerField(default=1)
     xp = models.IntegerField(default=0)
     admin = models.BooleanField(default=False)
+    wins= models.IntegerField(default=0)
+    matchs= models.IntegerField(default=0)
+    tournois= models.IntegerField(default=0)
 
     def __str__(self):
         return self.username
